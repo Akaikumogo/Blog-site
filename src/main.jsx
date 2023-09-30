@@ -3,9 +3,11 @@ import App from "./App.jsx";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./Router/index.jsx";
-
+import { ChakraProvider } from "@chakra-ui/react";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}>
-    <App />
-  </RouterProvider>
+  <ChakraProvider>
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+  </ChakraProvider>
 );

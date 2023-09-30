@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Inter", sans-serif;
 }
 
 @tailwind base;
@@ -11,4 +13,8 @@
 .container {
   width: 1240px;
   margin: 0 auto;
+}
+
+::-webkit-contacts-auto-fill-button {
+  display: none !important;
 }
