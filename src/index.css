@@ -18,3 +18,10 @@
 ::-webkit-contacts-auto-fill-button {
   display: none !important;
 }
+
+.card-title {
+  background: linear-gradient(to right, #ed8003, #8e0cac);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}

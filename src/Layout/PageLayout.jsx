@@ -7,7 +7,7 @@ function Layout() {
         <Navbar />
       </header>
       <main className="w-full mx-auto max-w-[800px] mt-[50px]">
-        <Outlet /> bu out let
+        <Outlet />
       </main>
     </>
   );

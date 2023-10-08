@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
+
 import { useState } from "react";
 import {
   Button,
-  FormControl,
   FormLabel,
   Input,
   InputGroup,
@@ -10,26 +10,44 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import { ViewIcon, ViewOffIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import { Link, useNavigate } from "react-router-dom";
 import useLoader from "../../Store";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isInvalidUserName, setIsInvalidUserName] = useState();
   const { isLoading, startLoading, endLoading } = useLoader();
   const toast = useToast();
+  const navigate = useNavigate();
 
-  const signInFunc = () => {
+  const signInFunc = (e) => {
+    e.preventDefault();
+    // eslint-disable-next-line no-unused-vars
+    const [username, password] = e.target.querySelectorAll("input");
+
+    setIsInvalidUserName(/^[@_a-zA-Z]+$/.test(username.value));
+
     startLoading();
     setTimeout(() => {
       endLoading(true);
-      toast({
-        title: "Hello bro",
-        status: "success",
-        position: "top",
-        variant: "top-accent",
-      });
+
+      if (isInvalidUserName) {
+        toast({
+          title: `${username.value}`,
+          status: "success",
+          position: "top",
+          variant: "top-accent",
+        });
+        navigate("/");
+      } else {
+        toast({
+          title: `Username xato`,
+          status: "error",
+          position: "top",
+          variant: "top-accent",
+        });
+      }
     }, 500);
   };
 
@@ -40,18 +58,36 @@ const SignIn = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <div className="w-full max-w-[450px] shadow-lg p-7 rounded-xl">
-        <Text fontSize="2xl" className="font-bold text-center mb-[40px]">
-          Sign In
-        </Text>
-        <FormControl>
+        <div className="relative">
+          <ArrowBackIcon
+            onClick={() => navigate("/")}
+            className="cursor-pointer absolute pointer left-0 top-[50%] text-[23px] font-bold -translate-y-[50%]"
+          />
+          <Text fontSize="2xl" className="font-bold text-center mb-[40px]">
+            Sign In
+          </Text>
+        </div>
+        <form onSubmit={(e) => signInFunc(e)}>
           <FormLabel htmlFor="username">User Name</FormLabel>
-          <Input id="username" type="text" />
+          <Input
+            onChange={(e) =>
+              setIsInvalidUserName(/^[@_a-zA-Z]+$/.test(e.target.value))
+            }
+            isInvalid={!isInvalidUserName}
+            required
+            id="username"
+            type="text"
+          />
 
           <FormLabel htmlFor="password" className="mt-[10px]">
             Password
           </FormLabel>
           <InputGroup>
-            <Input type={showPassword ? "text" : "password"} id="password" />
+            <Input
+              required
+              type={showPassword ? "text" : "password"}
+              id="password"
+            />
             <InputRightElement width="4.5rem">
               <Button
                 h="1.75rem"
@@ -64,14 +100,14 @@ const SignIn = () => {
             </InputRightElement>
           </InputGroup>
           <Button
-            onClick={signInFunc}
+            type="submit"
             isLoading={isLoading}
             colorScheme="blue"
             className="w-full mt-[25px]"
           >
             Sign in
           </Button>
-        </FormControl>
+        </form>
         <div className="text-center w-full mx-auto mt-5">
           <Link to="/sign-up">
             If you don't have an account
