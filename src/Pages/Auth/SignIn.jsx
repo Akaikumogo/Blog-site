@@ -13,11 +13,15 @@ import {
 import { ViewIcon, ViewOffIcon, ArrowBackIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import useLoader from "../../Store";
+import useUserAPI from "../../API/User";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isInvalidUserName, setIsInvalidUserName] = useState();
   const { isLoading, startLoading, endLoading } = useLoader();
+
+  const { signIn } = useUserAPI();
+
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -30,16 +34,35 @@ const SignIn = () => {
 
     startLoading();
     setTimeout(() => {
-      endLoading(true);
-
       if (isInvalidUserName) {
-        toast({
-          title: `${username.value}`,
-          status: "success",
-          position: "top",
-          variant: "top-accent",
-        });
-        navigate("/");
+        const body = {
+          username: username.value,
+          password: password.value,
+        };
+        signIn(body)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data) {
+              localStorage.setItem("token", res.data?.token);
+              localStorage.setItem("my_id", res.data?.user?.id);
+              localStorage.setItem("username", res.data?.user?.username);
+              navigate("/");
+              toast({
+                title: `${username.value}`,
+                status: "success",
+                position: "top",
+                variant: "top-accent",
+              });
+            }
+          })
+          .catch(() => {
+            toast({
+              title: `Unday user mavjud emas `,
+              status: "error",
+              position: "top",
+              variant: "top-accent",
+            });
+          });
       } else {
         toast({
           title: `Username xato`,
@@ -48,6 +71,7 @@ const SignIn = () => {
           variant: "top-accent",
         });
       }
+      endLoading(true);
     }, 500);
   };
 
