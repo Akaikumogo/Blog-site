@@ -20,14 +20,8 @@
 }
 
 .card-title {
-  background: #ff8000;
-  background: -webkit-linear-gradient(
-    to bottom left,
-    #ff8000 52%,
-    #ff07de 100%
-  );
-  background: -moz-linear-gradient(to bottom left, #ff8000 52%, #ff07de 100%);
-  background: linear-gradient(to bottom left, #ff8000 52%, #ff07de 100%);
+  background: linear-gradient(to right, #ed8003, #8e0cac);
+  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

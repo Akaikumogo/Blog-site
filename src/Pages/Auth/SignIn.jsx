@@ -72,7 +72,7 @@ const SignIn = () => {
         });
       }
       endLoading(true);
-    }, 1000);
+    }, 500);
   };
 
   const handleTogglePassword = () => {

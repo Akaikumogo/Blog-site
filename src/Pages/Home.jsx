@@ -1,13 +1,12 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
+=======
+>>>>>>> parent of 751b730 (search)
 import Card from "../Components/Card";
-import Loader from "../Components/UI/Loader";
-import SubNavbar from "../Components/SubNavbar";
-import useLoader from "../Store";
-import usePostAPI from "../API/Blog";
-import usePostStore from "../Store";
 
 const Home = () => {
+<<<<<<< HEAD
   const { startLoading, endLoading, isLoading } = useLoader();
   // const { setPosts, (posts } = usePostStore();
   const [posts, setPosts] = useState();
@@ -42,6 +41,11 @@ const Home = () => {
       ) : (
         posts?.map((item) => <Card key={item.id} {...item} />)
       )}
+=======
+  return (
+    <div>
+      <Card />
+>>>>>>> parent of 751b730 (search)
     </div>
   );
 };
