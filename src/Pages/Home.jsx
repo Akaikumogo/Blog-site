@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import Card from "../Components/Card";
 import Loader from "../Components/UI/Loader";
@@ -9,8 +9,8 @@ import usePostStore from "../Store";
 
 const Home = () => {
   const { startLoading, endLoading, isLoading } = useLoader();
-  const { setPosts, posts } = usePostStore();
-
+  // const { setPosts, (posts } = usePostStore();
+  const [posts, setPosts] = useState();
   const { getAllPosts } = usePostAPI();
   const toast = useToast();
 
@@ -42,7 +42,6 @@ const Home = () => {
       ) : (
         posts?.map((item) => <Card key={item.id} {...item} />)
       )}
-      <h1>LIL NIGGA</h1>
     </div>
   );
 };
