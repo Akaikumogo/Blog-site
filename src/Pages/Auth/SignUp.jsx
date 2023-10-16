@@ -14,6 +14,7 @@ import {
 import { ViewIcon, ViewOffIcon, ArrowBackIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import useLoader from "../../Store";
+import useUserAPI from "../../API/User";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +24,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const { signUpp } = useUserAPI();
 
   const signUpFunc = (e) => {
     e.preventDefault();
@@ -32,27 +34,38 @@ const SignUp = () => {
 
     setIsInvalidUserName(!/^[@_a-zA-Z]+$/.test(username.value));
 
-    startLoading();
-    setTimeout(() => {
-      endLoading(true);
-
-      if (!isInvalidUserName && password.value == confirmPassword.value) {
-        navigate("/");
-        toast({
-          title: `${username.value}`,
-          status: "success",
-          position: "top",
-          variant: "top-accent",
-        });
-      } else {
-        toast({
-          title: `Username invalid`,
-          status: "error",
-          position: "top",
-          variant: "top-accent",
-        });
-      }
-    }, 500);
+    if (!isInvalidUserName && password.value === confirmPassword.value) {
+      startLoading();
+      const body = {
+        full_name: fullname.value,
+        username: username.value,
+        password: password.value,
+      };
+      signUpp({ ...body }).then((res) => {
+        if (res.data) {
+          endLoading(true);
+          navigate("/sign-in");
+          toast({
+            title: `${username.value} ro'yxatdan o'tildi`,
+            status: "success",
+            position: "top",
+            variant: "top-accent",
+          });
+          toast({
+            title: "endi login qiling",
+            status: "info",
+            position: "top",
+          });
+        }
+      });
+    } else {
+      toast({
+        title: `Username invalid`,
+        status: "error",
+        position: "top",
+        variant: "top-accent",
+      });
+    }
   };
 
   const handleTogglePassword = () => {
